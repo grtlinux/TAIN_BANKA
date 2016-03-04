@@ -1,0 +1,9 @@
+1;1;1;1;I am a boy.;난 아이이다.;
+1;2;1;3;An instance of this class is used to generate a stream of pseudorandom numbers.;이것은 연습문제입니다.;
+1;3;1;2;If two instances of random are created with the same seed, and the same sequence of method calls is made for each.;이것은 연습문제입니다.;
+1;4;1;2;Many applications will find the method Math.random() simpler to use.;이것은 연습문제입니다.;
+1;5;1;3;Generates the next pseudorandom number.;이것은 연습문제입니다.;
+1;6;1;3;Returns the next pseudorandom, uniformly distributed boolean value from this random number generator's sequence.;이것은 연습문제입니다.;
+1;7;1;4;Generates random bytes and places them into a user-supplied byte array.;이것은 연습문제입니다.;
+1;8;1;3;Creates a new random number generator.;이것은 연습문제입니다.;
+1;9;1;3;Creates a new random number generator using a single long seed.;이것은 연습문제입니다.;

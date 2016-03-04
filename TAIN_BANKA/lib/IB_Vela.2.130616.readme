@@ -1,0 +1,198 @@
+--------------------------------------------------------------------------------
+----- 방카 사용 설명서 API
+
+작성일 : 2013.06.16
+
+작성자 : FEP뱅킹 강 석부장
+
+제공 API : IB_Vela.1.130616.jar
+
+
+1. 동기 송수신 방식
+
+	먼저 전문송수신에 관련된 서비를 처리할 객체 IBridgeServant 를 생성한다.
+
+	보내고자하는 전문과 전문 전송할 기관을 확인한다.
+
+	전송할 기관은 FEPID 로 구분한다. 한화생보사는 FEPID = HWI01 이다.
+
+	현재 개발 중에는 'HWI01'로 통일하여 처리하고 있는데 기관 라인이 OPEN 되고
+
+	전문 송수신이 가능하면 그 기관에 대해서도 FEPID를 결정하고 송수신 처리를
+
+	할 것이다. 그리고 보내고자 하는 전문은 XML 형태로 되어 있어야 한다. 중간에
+
+	CR, LF 문자가 있어도 상관 없다. 최종적으로 TCP/IP 라인을 통해서 전달될 때는
+
+	stream 형태로 변환되어 전달 되기때문이다. 송신처리를 하는 method는 sendXml이다.
+
+
+		서비스객체.sendXml( FEPID, 요청전문XML );
+
+
+	전문이 송신되고 응답이 올때까지 기다리는 동기방식에서는 recvXml method의
+
+	timeout 시간만 조절하면 된다. timeout 시간 단위는 milliseconds 로 되어 있다.
+
+	timeout 을 0으로 설정하면 응답이 올때까지 기다리는 동기방식이고, timeout이
+
+	0 이 아니면 최대 설정한 timeout 만큼 기다리고 recvXml method를 끝낸다.
+
+	그리고 recvXml method 의 리턴값을 확인하여 처리여부를 확인할 수 있다.
+
+	마찬가지로 timeout 인자가 없는 method 도 동기방식의 method 이다. 응답전문을
+
+	받으면 String 형의 문자열 값이 된다. 내용은 전문 XML이고 값은 각 TAG 를 통해
+
+	알 수 있다.
+
+	아래는 동기방식의 프로그램 처리이다. 단건의 요청전문을 보내서 단건의 응답전문을
+
+	기다리고 받는 소스로 되어있다. 반드시 앞뒤로 try-catch 처리를 해야한다.
+
+
+		try {
+			/*
+			 * sync 송수신처리 방법
+			 * 그냥 sendXml 하고 recvXml 로 기다린다.
+			 */
+
+			IBridgeServant servant = new IBridgeServant();
+
+			// 요청전문을 생성한다.
+			String strReqSoapXml = XmlObject.setHdrBakDocseq(Sample01Xml.getReqXml());
+			if (flag) System.out.println("### REQ : " + strReqSoapXml);
+
+			// 요청전문을 송신한다.
+			servant.sendXml("HWI01", strReqSoapXml);     // Send XML
+
+			// 응답전문을 받을 때까지 기다린다.
+			// String strResSoapXml = servant.recvXml("HWI01");  // 아래 method와 같음
+			String strResSoapXml = servant.recvXml("HWI01",0);
+			if (flag) System.out.println("### RES: " + strResSoapXml);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+
+2. 비동기 송수신 방식
+
+	비동기 방식의 송수신 방식은 보내고자 하는 여러개의 요청전문을 일괄적으로 송신하고
+
+	비동기 방식으로 recvXml method를 호출하여 응답전문이 수신될 때까지 반복하게 된다.
+
+	이 방식은 송신 따로 수신 따로 디자인할 때 쓰이는 방식으로 반드시 동일한 해당 객체를
+
+	사용하야 한다. IBridgeServant 객체 한개의 instance에서 몇번이든 전문송신이 이뤄져도
+
+	그 객체 instance의 recvXml을 이용해야 응답전문을 수신 받을 수 있다.
+
+	아래 소스는 객체를 생성하고 특정갯수의 요청전문을 일과적으로 송신하고 recvXml method를
+
+	반복하면서 응답전문을 수신하는 것이다. 응답전문은 요청송신한 순서대로 오지 않을 수 있다.
+
+	응답전문 수신후 특정키로 전문을 확인하는 것이 필요하다. FEP뱅킹에서는 HDR_BAK_DOCSEQ 를
+
+	이용하여 관리하고 있다. 개발자들은 중복되지 않는 HDR_BAK_DOCSEQ 를 관리할 필요가 있다.
+
+	그리고 FEPID 에 대해서는 기관과 확인하여 특정 TAG에 넣는 방식을 결정해야 한다.
+
+
+		try {
+
+			/*
+			 * 송수신 처리를 하는 객체를 생성한다.
+			 * 이 객체는 송신과 수신을 async 방식으로
+			 * 처리한다.
+			 */
+			IBridgeServant servant = new IBridgeServant();
+
+			int waitTime = 2;
+			int loopCount = 10;
+			{
+				try {
+					waitTime = Integer.parseInt(System.getProperty("system.ib.param.waittime", "2"));
+					loopCount = Integer.parseInt(System.getProperty("system.ib.param.loopcount", "10"));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			// 여러건을 한꺼번에 송신한다.
+			// send n times
+			for (int i=0; i < loopCount; i++) {
+
+				// 요청송신전문을 생성한다. 아래 요청전문은 테스트를 위한 것이고
+				// 개발자들은 사용하지 말아주세요.
+				String strReqSoapXml = XmlObject.setHdrBakDocseq(Sample01Xml.getReqXml());
+
+				// 요청전문을 여러번 보낸다.
+				servant.sendXml("HWI01", strReqSoapXml);     // Send XML
+				if (flag) System.out.println("REQ["+ i +"] : " + strReqSoapXml);
+
+				// wait for some seconds.
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {}
+			}
+
+			System.out.println("-------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
+
+			/*
+			 * 여러건을 한꺼번에 수신한다.
+			 * recv n times
+			 */
+			for (int i=0; i < 100000; i++) {
+				/*
+				 * 응답전문을 받을 준비를 한다.
+				 *
+				 * 응답수신전문을 수신한다. 기다리면서
+				 * recvXml(FEPID, BLOCKTIME)
+				 *         FEPID는 기관별 FEP뱅킹에서 부여한 ID
+				 *         BLOCKTIME 은 응답전문을 기다리는 최대시간, 받은 즉시 return 된다.
+				 *         만일 BLOCKTIME 이 0 이면 응답전문을 무한정 기다린다. (sync 에 적용)
+				 *         async 에 적용하려면 BLOCKTIME 을 특정시간(millisecond) 으로 관리하면
+				 *         된다.
+				 */
+
+				// Recv XML wait for 2 seconds until receiving data
+				String strResSoapXml = servant.recvXml("HWI01", 2000);
+
+				if (strResSoapXml != null) {
+					// receive the response message from the server, and not null
+					if (flag) System.out.println("\nRES[" + i + "]: " + strResSoapXml);
+				}
+
+				System.out.print("#");
+
+				// wait for some seconds.  loop wait time
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {}
+			}
+
+			/*
+			 * 위에서 테스트한 결과로 송신과 수신은 async 방식으로 진행되며
+			 * 연속송신하는 가운데 수신처리를 삽입할 수 있으며 그 반대의 경우도
+			 * 가능하다.
+			 */
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+감사합니다. 수고하세요.
+

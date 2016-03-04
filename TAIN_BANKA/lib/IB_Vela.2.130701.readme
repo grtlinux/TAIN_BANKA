@@ -1,0 +1,95 @@
+----- 방카 사용 설명서 API - 4
+
+작성일 : 2013.07.02
+
+작성자 : FEP뱅킹 강 석부장(010-4258-2025)
+
+제공 API : IB_Vela.2.130701.jar
+
+
+
+To :  양윤성(010-9208-7945), 김호세(010-3817-1744)
+
+
+안녕하세요.
+
+강석부장입니다.
+
+프로그램 버그와 여러가지 기능을 추가하여 배포합니다.
+
+사용은 기존과 동일하게 패키지 파일을 IB_Vela.2.130701.jar 원하는 위치에
+
+옮겨 놓으시고 CLASSPATH로 연결만 하면 됩니다. WAS에서는 lib에 포함을
+
+시켜야 되겠지요. 그리고 많이 바뀐 부분은 server 폴더 아래의 properties
+
+파일입니다. 일단 ib.properties 를 확인하겠습니다.
+
+        # 개발자 PC에 설정
+		# AP 서버1
+		system.ib.param.host.01.name           = AP 서버1
+		system.ib.param.host.01.fepid          = LOCAL
+		system.ib.param.host.01.host.ip        = 172.30.222.9
+		system.ib.param.host.01.host.port      = 2326
+
+
+여기 name은 접속할 서버의 명칭을 나타내는 것이고 fepid 는 특별한 의미가
+
+없으면 LOCAL로 나타냅니다. 그리고 host.ip host.port 는 접속할 서버의
+
+ip와 port를 나타냅니다.  즉, 개인 PC에서 WAS를 설치하여 연결하려면
+
+위와 같은 ib.properties 설정이 필요합니다.
+
+
+다음은 ap.properties 에 대해 설명하겠습니다.
+
+AP 는 FEP 서버로 가기 위한 중간단계의 서버입니다. 그래서 접속을 받을
+
+포트는 LISTEN 하고 FEP에는 클라이언트로서 접속하게 됩니다.
+
+아래의 내용은 listen 포트와 그 명칭을 설명한 것입니다.
+
+
+		# AP 서버에 설정
+		# AP 서버1
+		system.ib.param.listen.01.name         = AP 서버1
+		system.ib.param.listen.01.port         = 2326
+
+
+다음으로 아래의 내용은 AP서버에 접근할 수 있는 시스템을 정의합니다.
+
+접근 가능한 시스템의 ip와 그 명칭을 정합니다.
+
+
+		# AP 서버에 설정
+		# LOCAL
+		system.ib.param.allow.99.name          = LOCAL
+		system.ib.param.allow.99.host.ip       = localhost
+
+
+마지막으로 아래의 내용은 AP서버가 클라이언트 입장에서 접속할 FEP 서버의
+
+명칭 및 ip, port를 정의합니다.  fepid는 특별히 사용하지 않으므로 LOCAL로
+
+정합니다.
+
+
+		# AP 서버에 설정
+		# FEP뱅킹 서버1
+		system.ib.param.host.91.name           = FEP뱅킹 서버1
+		system.ib.param.host.91.fepid          = LOCAL
+		system.ib.param.host.91.host.ip        = 172.30.222.3
+		system.ib.param.host.91.host.port      = 2226
+
+
+여기서 AP서버는 FEP 서버를 연결하기 위한 중간 다리 역할을 하는 서버를 말합니다.
+
+그래서 AP서버는 방카WAS서버(172.30.222.9)에 설치되어 있습니다.
+
+
+
+이상으로 개발자들이 각 PC에서 접근가능하도록 properties 파일을 설정할 수 있도록 했습니다.
+
+궁금하신 점이 있으시면 연락주세요.
+
