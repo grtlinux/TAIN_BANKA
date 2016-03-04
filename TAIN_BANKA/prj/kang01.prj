@@ -1,0 +1,51 @@
+[Files]
+0=..\..\..\..\1.연결\501.작업.txt
+1=..\server\ap\cfg\ap.properties
+2=..\server\ext\cfg\ext.properties
+3=..\server\fep\cfg\fep.properties
+4=..\server\ib\cfg\ib.properties
+5=..\server\webcash\cfg\webcash.properties
+[Open Files]
+Active File Display Mode=3
+Active File Index=0
+Open File Line0=1790225
+Open File Line1=0
+Open File Line2=7754
+Open File Line3=14517
+Open File Line4=8176
+Open File Line5=16601
+Open File Line6=5258
+Open File Pos0=1791754
+Open File Pos1=958
+Open File Pos2=3419
+Open File Pos3=12072
+Open File Pos4=8362
+Open File Pos5=17125
+Open File Pos6=5923
+Open File Window Pos0=2,3,-1,-1,-8,-27,88,88,808,664
+Open File Window Pos1=0,1,-1,-1,-8,-27,110,110,703,652
+Open File Window Pos2=0,1,-1,-1,-8,-27,132,132,725,674
+Open File Window Pos3=0,1,-1,-1,-8,-27,154,154,747,696
+Open File Window Pos4=0,1,-1,-1,-8,-27,176,176,1025,718
+Open File Window Pos5=0,1,-1,-1,-8,-27,198,198,1047,740
+Open File Window Pos6=0,1,-1,-1,-8,-27,220,220,1069,762
+Open File0=..\..\..\..\1.연결\501.작업.txt
+Open File1=FTP::73.FEP(뱅킹) VIP (225.53)\/hw01/ibridge/ib2/cfg|Master.cfg
+Open File2=FTP::43.FEP개발(222.3)\/hw01/ibridge/ib2/src|log_zip.c
+Open File3=FTP::43.FEP개발(222.3)\/hw01/ibridge/ib2/src|ps_man.c
+Open File4=FTP::43.FEP개발(222.3)\/hw01/ibridge/ib2/src|oxscom2.c
+Open File5=FTP::43.FEP개발(222.3)\/hw01/ibridge/ib2/src|oxrcom2.c
+Open File6=FTP::43.FEP개발(222.3)\/hw01/ibridge/ib2/src|MSock.c
+Open File7=
+[Project Information]
+Create Tagfile=0
+Filter=
+Include Sub Directories=1
+Project Start=DD07070001000100160002002F00000034
+Project Tagfile=
+Project Wordfile=
+Relative to Project File=1
+Use Relative Directory=1
+Working Time=9918212
+[Project ID]
+Signature=UE Proj: v.1

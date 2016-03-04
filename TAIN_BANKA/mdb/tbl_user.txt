@@ -1,0 +1,2 @@
+imsi;imsi123;임시사용자
+guest;guest123;사랑방손님 사용자

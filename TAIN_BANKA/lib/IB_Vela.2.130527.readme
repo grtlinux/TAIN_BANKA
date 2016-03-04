@@ -1,0 +1,118 @@
+< IBridge streamXML 통신방식 적용을 위한 개발방법 >
+
+Agent API는 IB_Vela.0.130527.jar 패키지로 제공됩니다.
+
+IB_Vela는 제품명이고, 다음의 0는 버젼의 숫자이고, 130527은
+
+소스적용 날짜입니다. 버젼별로 관리하면서 후버젼이 문제 있으면
+
+저에게 공지하시고 이전버젼으로 개발하시면 되겠습니다.
+
+사용방법은 아래와 같습니다.
+
+		try {
+			IBridgeServant servant = new IBridgeServant();
+
+			String strReqXml = "<hello>Hello, world.!!!!!</hello>";
+			String strResXml = null;
+
+			// 요청xml전문 송신
+			System.out.println("REQ: " + strReqXml);
+			servant.sendXml("FEPID", strReqXml);
+
+			// 응답xml전문 수신
+			strResXml = servant.recvXml("FEPID");
+			System.out.println("RES: " + strResXml);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+먼저 내부에서 발생할 수 있는 Exception 처리는 필요합니다.
+
+IBridge FEP뱅킹과 통신할 객체 IBridgeServant를 먼저 생성하면서
+
+아래와 같이 처리합니다.
+
+
+    객체생성 :  IBridgeServant servant = new IBridgeServant();
+
+
+보내고자하는 기관의 FEPID를 정합니다. FEPID는 FEP뱅킹 담당자가
+
+정해서 알려줄겁니다. 그리고 전송하고자 하는 요청 XML문서를
+
+String 변수에 할당합니다. 요청XML전문은 CR, LF 문자 있어도 상관 없습니다.
+
+
+	요청전문 : String strReqXml = "<hello>Hello, world.!!!!!</hello>";
+
+
+그리고 IBridgeServant 객체의 method를 콜합니다.
+
+
+	요청송신 : servant.sendXml("FEPID", strReqXml);
+
+
+전송처리시 발생하는 에러는 Exception을 발생할 겁니다. 반드시 Exception
+
+처리를 동반하여 처리하십시요.
+
+요청전송 후에는 응답xml전문을 기다립니다. Blocking과 Non-Blocking 모드가
+
+있는데 그것은 필요시에 알려드리겠습니다. 지금은 구현 진행중입니다.
+
+
+	응답수신 : strResXml = servant.recvXml("FEPID");
+
+
+응답수신 후의 결과는 xml문서형태로 받습니다. 그래서 그 xml문서를 parsing을
+
+하여 각 필드의 값을 이용하시면 됩니다. XML의 DOM 편을 참조하시면 됩니다.
+
+
+아래의 방카에 관련된 FEPID는 FEP뱅킹 담당자가 정하고 알려드립니다.
+
+담당자는 강석부장 (010-4258-2025, 3772-8491)
+
+
+----- 방카 -----------------------------------------FEPID------------------------
+
+한화생명                    HWI
+        연계                        01              HWI01
+
+        일괄배치                            51      HWI51
+
+신한생명                    SHI
+        연계                        01              SHI01
+
+        일괄배치                            51      SHI51
+
+하나HSBC생명                HNI
+        연계                        01              HNI01
+
+        일괄배치                            51      HNI51
+
+흥국생명                    HKI
+        연계                        01              HKI01
+
+        일괄배치                            51      HKI51
+
+카디프생명                  KFI
+        연계                        01              KFI01
+
+        일괄배치                            51      KFI51
+
+알리안츠생명                ALI
+        연계                        01              ALI01
+
+        일괄배치                            51      ALI51
+
+삼성생명                    SSI
+        연계                        01              SSI01
+
+        일괄배치                            51      SSI51
+
+
+이상입니다.  감사합니다.
+
