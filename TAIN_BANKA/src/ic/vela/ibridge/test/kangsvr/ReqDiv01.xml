@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="EUC-KR" standalone="yes"?>
+<Org01Record>
+<Field01>REQ</Field01>
+<Field02>ABC1234234</Field02>
+<Field03>10000</Field03>
+<Field04>5320000</Field04>
+<Field05>1230</Field05>
+<Field06>
+<SubField0601>Sub1101</SubField0601>
+<SubField0602>Sub1102</SubField0602>
+<SubField0603/>
+</Field06>
+<Field06>
+<SubField0601/>
+<SubField0602>Sub1106</SubField0602>
+<SubField0603>Sub1107</SubField0603>
+</Field06>
+<Field06>
+<SubField0601>Sub1108</SubField0601>
+<SubField0602>    </SubField0602>
+<SubField0603>Sub1110</SubField0603>
+</Field06>
+</Org01Record>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="EUC-KR" standalone="yes"?>
+<StandardRecord>
+    <Field01>REQ</Field01>
+    <Field02>ABC1234234</Field02>
+    <Field03> TIME 123 </Field03>
+    <Field04>KOREA</Field04>
+    <Field05>earth</Field05>
+    <Field06>10000</Field06>
+    <Field07>5320000</Field07>
+    <Field08>1230</Field08>
+    <Field09>5820</Field09>
+    <Field10>457</Field10>
+    <Field11>
+    	<SubField1101>Sub1101</SubField1101>
+    	<SubField1102>Sub1102</SubField1102>
+    </Field11>
+    <Field11>
+    	<SubField1101></SubField1101>
+    	<SubField1102>Sub1106</SubField1102>
+    	<SubField1103>Sub1107</SubField1103>
+    </Field11>
+    <Field11>
+    	<SubField1101>Sub1108</SubField1101>
+    	<SubField1102/>
+    	<SubField1103>Sub1110</SubField1103>
+    </Field11>
+</StandardRecord>
